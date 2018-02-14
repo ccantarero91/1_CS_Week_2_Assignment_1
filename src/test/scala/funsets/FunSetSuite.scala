@@ -133,7 +133,8 @@ class FunSetSuite extends FunSuite {
 
   test("filter function"){
     new TestSets {
-      val s = union(union(s1,s2),s3)
+      val s5 = singletonSet(5)
+      val s = union(union(union(s1,s2),s3),s5)
       val t = filter(s, i => if(i%2 != 0) true else false)
       assert(contains(t,1), "filter odd 1")
       assert(contains(t,3), "filter odd 3")
