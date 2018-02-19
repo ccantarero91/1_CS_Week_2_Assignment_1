@@ -163,4 +163,12 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("map works"){
+    new TestSets {
+      val s = union(s1, s2)
+      val t = union(singletonSet(2), singletonSet(4))
+      assert(map(s,x=> x*2).toString() === t.toString(), "map 1")
+    }
+  }
+
 }
