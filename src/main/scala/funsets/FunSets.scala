@@ -19,54 +19,30 @@ object FunSets {
   /**
     * Returns the set of the one given element.
     */
-  def singletonSet(elem: Int): Set = {
-    (y: Int) =>
-      if (y == elem)
-        true
-      else
-        false
-  }
-
+  def singletonSet(elem: Int): Set = y => y == elem
 
   /**
     * Returns the union of the two given sets,
     * the sets of all elements that are in either `s` or `t`.
     */
-  def union(s: Set, t: Set): Set = {
-    (y: Int) => {
-      contains(s, y) || contains(t, y)
-    }
-  }
+  def union(s: Set, t: Set): Set =  y => contains(s, y) || contains(t, y)
 
   /**
     * Returns the intersection of the two given sets,
     * the set of all elements that are both in `s` and `t`.
     */
-  def intersect(s: Set, t: Set): Set = {
-    (y: Int) => {
-      contains(s, y) && contains(t, y)
-    }
-  }
+  def intersect(s: Set, t: Set): Set = y => contains(s, y) && contains(t, y)
 
   /**
     * Returns the difference of the two given sets,
     * the set of all elements of `s` that are not in `t`.
     */
-  def diff(s: Set, t: Set): Set = {
-    (y: Int) => {
-      contains(s, y) && !contains(t, y)
-    }
-  }
+  def diff(s: Set, t: Set): Set = y => contains(s, y) && !contains(t, y)
 
   /**
     * Returns the subset of `s` for which `p` holds.
     */
-  def filter(s: Set, p: Int => Boolean): Set = {
-    (y: Int) => {
-      contains(s, y) && p(y)
-    }
-  }
-
+  def filter(s: Set, p: Int => Boolean): Set = y => contains(s, y) && p(y)
 
   /**
     * The bounds for `forall` and `exists` are +/- 1000.
@@ -79,8 +55,8 @@ object FunSets {
   def forall(s: Set, p: Int => Boolean): Boolean = {
     def iter(a: Int): Boolean = {
       if (a == bound) true
-      else if (!contains(s, a) || !contains(filter(s, p), a)) false
-      else iter(a + 1)
+      else if (contains(s,a) && !filter(s,p)(a)) false
+      else iter(a+1)
     }
 
     iter(-bound)
@@ -91,10 +67,13 @@ object FunSets {
     * that satisfies `p`.
     */
   def exists(s: Set, p: Int => Boolean): Boolean = {
-      if(forall(s,p))
-        true
-      else
-        false
+    def iter(a: Int): Boolean = {
+      if (a == bound) false
+      else if (contains(s,a) && filter(s,p)(a)) true
+      else iter(a+1)
+    }
+
+    iter(-bound)
   }
 
   /**

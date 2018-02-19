@@ -141,5 +141,26 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("forall works") {
+    new TestSets {
+      val s5 = singletonSet(5)
+      val sMinus1 = singletonSet(-1)
+      val s = union(union(union(s1,s2),s3),s5)
+      val sMinus = union(union(union(s1,s2),s3),sMinus1)
+      assert(forall(s,x => x>0) === true, "forall => for all positive int it has to work")
+      assert(forall(sMinus,x => x>0) === false, "forall => if a value is negative the function has to say false")
+    }
+  }
+
+  test("exists works"){
+    new TestSets {
+      val s5 = singletonSet(5)
+      val sMinus1 = singletonSet(-1)
+      val s = union(union(union(s1,s2),s3),s5)
+      val sMinus = union(union(union(s1,s2),s3),sMinus1)
+      assert(exists(s,x => x<0) === false, "exists => for all positive int there is no one which is minor than zero")
+      assert(exists(sMinus,x => x<0) === true, "exists => a value is negative so this should be true")
+    }
+  }
 
 }
